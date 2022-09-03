@@ -4,6 +4,7 @@ chrome.runtime.onMessage.addListener(onSelectedTextChanged);
 
 function onSelectedTextChanged(text) {
     selectedText = text;
+    //console.log(selectedText);
 };
 
 browser.contextMenus.create({
@@ -13,17 +14,17 @@ browser.contextMenus.create({
 
 browser.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId === "get-popup") {
-        const url = 'https://www.google.com.tr/';
-        const Http = new XMLHttpRequest();
-        Http.open("GET", url);
-        Http.send();
+        const url = 'https://tr.wikipedia.org';
+        const http = new XMLHttpRequest();
+        http.open("GET", url);
+        http.send();
 
-        Http.onreadystatechange = (e) => {
-            if (Http.readyState === 4 && Http.status === 200) {
-                console.log(Http.responseText)
+        http.onreadystatechange = (e) => {
+            if (http.readyState === 4 && http.status === 200) {
+                console.log(http.responseText)
             }
         }
-        //console.log(selectedText);
+        console.log(selectedText);
     }
 });
 
