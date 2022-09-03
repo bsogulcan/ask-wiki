@@ -11,18 +11,12 @@ chrome.contextMenus.create({
 
 function onSelectedTextChanged(text) {
     selectedText = normalizeSearchingText(text);
-
-    //chrome.window.open(wikiUrl + 'selectedText', "_blank");
-    console.log('NormalizedText:' + selectedText);
 };
-
-
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId === "search-on-wikipedia") {
-
         console.log('Searching ' + selectedText + ' on Wikipedia');
-        chrome.tabs.create({ url: "" + wikiUrl + selectedText + "" });
+        openWikipedia();
         // const url = 'https://tr.wikipedia.org';
         // const http = new XMLHttpRequest();
         // http.open("GET", url);
