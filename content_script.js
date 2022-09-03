@@ -4,6 +4,7 @@ var wikiBoxBaseHtml = '<span id="ask-wiki-box" style="width: 30px; height: 30px;
 
 document.addEventListener('selectionchange', () => {
     selectedText = document.getSelection().toString();
+    chrome.runtime.sendMessage(selectedText);
 });
 
 window.onmouseup = function (e) {
@@ -16,16 +17,16 @@ window.onmouseup = function (e) {
 
             wikiBox = document.createElement('span');
             wikiBox.innerHTML = wikiBoxHtml;
-            wikiBox.addEventListener("click", saerchBoxOnClick.bind(null, selectedText, wikiBox), false);
+            wikiBox.addEventListener("click", searchBoxOnClick.bind(null, selectedText, wikiBox), false);
             document.body.appendChild(wikiBox);
 
         }
     }, 100)
 };
 
-function saerchBoxOnClick(text, wikiBox) {
+function searchBoxOnClick(text, wikiBox) {
     chrome.runtime.sendMessage(text);
-    console.log('Clicked SearchBox Keyword=' + text);
+    //console.log('Clicked SearchBox Keyword=' + text);
     wikiBox.remove();
 }
 
