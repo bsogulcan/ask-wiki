@@ -3,25 +3,26 @@ var selectedText;
 
 chrome.runtime.onMessage.addListener(onSelectedTextChanged);
 
-browser.contextMenus.create({
+chrome.contextMenus.create({
     id: "search-on-wikipedia",
-    title: "Search on Wikipedia"
+    title: "Search on Wikipedia",
+    contexts: ["selection"],
 });
 
 function onSelectedTextChanged(text) {
     selectedText = normalizeSearchingText(text);
 
-    //browser.window.open(wikiUrl + 'selectedText', "_blank");
+    //chrome.window.open(wikiUrl + 'selectedText', "_blank");
     console.log('NormalizedText:' + selectedText);
 };
 
 
 
-browser.contextMenus.onClicked.addListener((info, tab) => {
+chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId === "search-on-wikipedia") {
 
         console.log('Searching ' + selectedText + ' on Wikipedia');
-        browser.tabs.create({ url: "" + wikiUrl + selectedText + "" });
+        chrome.tabs.create({ url: "" + wikiUrl + selectedText + "" });
         // const url = 'https://tr.wikipedia.org';
         // const http = new XMLHttpRequest();
         // http.open("GET", url);
@@ -51,5 +52,5 @@ function normalizeSearchingText(text) {
 
 
 function openWikipedia() {
-    browser.tabs.create({ url: "" + wikiUrl + selectedText + "" });
+    chrome.tabs.create({ url: "" + wikiUrl + selectedText + "" });
 }

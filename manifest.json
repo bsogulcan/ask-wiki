@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "AskWiki",
   "description": "Learn from Wikipedia",
   "version": "0.1.1",
@@ -7,9 +7,7 @@
     "64": "icons/icon.png"
   },
   "background": {
-    "scripts": [
-      "background_script.js"
-    ]
+    "service_worker": "background_script.js"
   },
   "content_scripts": [
     {
@@ -23,18 +21,11 @@
       "run_at": "document_end"
     }
   ],
-  "browser_action": {
-    "default_icon": {
-      "64": "icons/icon.png"
-    },
+  "action": {
     "default_popup": "browserAction/index.html",
-    "default_title": "AskWiki"
-  },
-  "page_action": {
     "default_icon": {
       "64": "icons/icon.png"
     },
-    "default_popup": "pageAction/index.html",
     "default_title": "AskWiki"
   },
   "permissions": [
