@@ -46,5 +46,10 @@ function closeSearchBox() {
 }
 
 function onDataReceived(data) {
-    console.log(data, "Data");
+    var el = document.createElement('html');
+    el.innerHTML = data;
+    const paragraphs = el.getElementsByTagName('p');
+    for (let i = 0; i < paragraphs.length; i++) {
+        console.log(paragraphs[i].innerText);
+    }
 };

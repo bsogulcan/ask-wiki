@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "AskWiki",
   "description": "Learn from Wikipedia",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "icons": {
     "64": "icons/icon.png"
   },
