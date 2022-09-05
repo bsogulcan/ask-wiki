@@ -56,10 +56,3 @@ function getWikipediaContent(tabId) {
             console.error(err);
         });
 }
-
-// function getPTags(htmlString) {
-//     var el = document.createElement('html');
-//     el.innerHTML = htmlString;
-//     const paragraphs = el.getElementsByTagName('p');
-//     console.log(paragraphs);
-// }
