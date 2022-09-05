@@ -17,6 +17,7 @@ document.addEventListener('selectionchange', () => {
             .replace('{{left}}', clientX);
 
         const wikiBox = document.createElement('span');
+        wikiBox.id = 'wiki-box';
         wikiBox.innerHTML = wikiBoxHtml;
         wikiBox.addEventListener("click", searchBoxOnClick.bind(null, selectedText, wikiBox), false);
         document.body.appendChild(wikiBox);
@@ -38,7 +39,7 @@ function searchBoxOnClick(text, wikiBox) {
 }
 
 function closeSearchBox() {
-    let wikiBox = document.getElementById("ask-wiki-box");
+    let wikiBox = document.getElementById("wiki-box");
     if (wikiBox) {
         wikiBox.remove();
     }
