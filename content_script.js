@@ -1,7 +1,6 @@
 let selectedText;
 let clientY;
 let clientX;
-var wikiBoxBaseHtml = '<span id="ask-wiki-box" style="width: 30px; height: 30px; background-color: white; border-radius: 10px; position: fixed; z-index: 10000; top: {{top}}px; left: {{left}}px; border-style: solid; border-color: dimgray; cursor: pointer"><p style="color:black;text-align: center;margin: 3px;font-family: auto;font-size: x-large; -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;">W</p></span>';
 
 chrome.runtime.onMessage.addListener(onDataReceived);
 
@@ -17,7 +16,7 @@ document.addEventListener('selectionchange', () => {
         let wikiBoxHtml = wikiBoxBaseHtml.replace('{{top}}', (clientY - 40))
             .replace('{{left}}', clientX);
 
-        wikiBox = document.createElement('span');
+        const wikiBox = document.createElement('span');
         wikiBox.innerHTML = wikiBoxHtml;
         wikiBox.addEventListener("click", searchBoxOnClick.bind(null, selectedText, wikiBox), false);
         document.body.appendChild(wikiBox);

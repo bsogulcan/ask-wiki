@@ -16,6 +16,7 @@
         "https://*/*"
       ],
       "js": [
+        "./components/wikiBox.js",
         "content_script.js"
       ],
       "run_at": "document_end"
