@@ -2,9 +2,14 @@ let selectedText;
 
 var wikiBoxBaseHtml = '<span id="ask-wiki-box" style="width: 30px; height: 30px; background-color: white; position: fixed; z-index: 10000; top: {{top}}px; left: {{left}}px;"></span>';
 
+chrome.runtime.onMessage.addListener(onDataReceived);
+
 document.addEventListener('selectionchange', () => {
     selectedText = document.getSelection().toString();
-    chrome.runtime.sendMessage(selectedText);
+    chrome.runtime.sendMessage({
+        text: selectedText,
+        search: false
+    });
 });
 
 window.onmouseup = function (e) {
@@ -25,7 +30,10 @@ window.onmouseup = function (e) {
 };
 
 function searchBoxOnClick(text, wikiBox) {
-    chrome.runtime.sendMessage(text);
+    chrome.runtime.sendMessage({
+        text: text,
+        search: true
+    });
     //console.log('Clicked SearchBox Keyword=' + text);
     wikiBox.remove();
 }
@@ -37,5 +45,6 @@ function closeSearchBox() {
     }
 }
 
-// window.onmousedown = function () {
-// };
+function onDataReceived(data) {
+    console.log(data, "Data");
+};

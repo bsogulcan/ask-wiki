@@ -9,25 +9,20 @@ chrome.contextMenus.create({
     contexts: ["selection"],
 });
 
-function onSelectedTextChanged(text) {
-    selectedText = normalizeSearchingText(text);
+function onSelectedTextChanged(message, tab) {
+    selectedText = message.text;
+    if (message.search) {
+
+        selectedText = normalizeSearchingText(message.text);
+        getWikipediaContent(tab.tab.id);
+    }
+
 };
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId === "search-on-wikipedia") {
         console.log('Searching ' + selectedText + ' on Wikipedia');
         openWikipedia();
-        // const url = 'https://tr.wikipedia.org';
-        // const http = new XMLHttpRequest();
-        // http.open("GET", url);
-        // http.send();
-
-        // http.onreadystatechange = (e) => {
-        //     if (http.readyState === 4 && http.status === 200) {
-        //         console.log(http.responseText)
-        //     }
-        // }
-        // console.log(selectedText);
     }
 });
 
@@ -48,3 +43,23 @@ function normalizeSearchingText(text) {
 function openWikipedia() {
     chrome.tabs.create({ url: "" + wikiUrl + selectedText + "" });
 }
+
+function getWikipediaContent(tabId) {
+    fetch(wikiUrl + selectedText)
+        .then(response => response.text())
+        .then(data => {
+            //console.log(data);
+            chrome.tabs.sendMessage(tabId, data);
+            //getPTags(data);
+        })
+        .catch(err => {
+            console.error(err);
+        });
+}
+
+// function getPTags(htmlString) {
+//     var el = document.createElement('html');
+//     el.innerHTML = htmlString;
+//     const paragraphs = el.getElementsByTagName('p');
+//     console.log(paragraphs);
+// }
