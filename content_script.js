@@ -1,6 +1,8 @@
 let selectedText;
 let clientY;
 let clientX;
+let paragraphs;
+let lastParagraphIndex;
 
 chrome.runtime.onMessage.addListener(onDataReceived);
 
@@ -21,7 +23,6 @@ document.addEventListener('selectionchange', () => {
         wikiBox.innerHTML = wikiBoxHtml;
         wikiBox.addEventListener("click", searchBoxOnClick.bind(null, selectedText, wikiBox), false);
         document.body.appendChild(wikiBox);
-
     }
 });
 
@@ -45,11 +46,51 @@ function closeSearchBox() {
     }
 }
 
-function onDataReceived(data) {
+function onDataReceived(contentInfo) {
+    wikiResultClose();
+
     var el = document.createElement('html');
-    el.innerHTML = data;
-    const paragraphs = el.getElementsByTagName('p');
-    for (let i = 0; i < paragraphs.length; i++) {
-        console.log(paragraphs[i].innerText);
-    }
+    el.innerHTML = contentInfo.data;
+    paragraphs = el.getElementsByTagName('p');
+
+    let wikiResultHtml = wikiResultBaseHtml.replace('{{top}}', (clientY - 40))
+        .replace('{{left}}', clientX);
+    const wikiResult = document.createElement('span');
+    wikiResult.id = 'wiki-box-result';
+    wikiResult.innerHTML = wikiResultHtml;
+    document.body.appendChild(wikiResult);
+    const wikiResultCloseButton = document.getElementById('wiki-result-close');
+    wikiResultCloseButton.addEventListener("click", wikiResultClose.bind(null), false);
+
+    const wikiResultTitle = document.getElementById('wiki-result-title');
+    wikiResultTitle.innerText = contentInfo.selectedText;
+
+    const wikiResultContent = document.getElementById('wiki-result-content');
+    const contentItem = document.createElement('p');
+    contentItem.innerText = paragraphs[0]?.innerText;
+    wikiResultContent.appendChild(contentItem);
+    lastParagraphIndex = 0;
+
+    const wikiResultLoadModeButton = document.getElementById('wiki-result-load-more');
+    wikiResultLoadModeButton.addEventListener("click", wikiLoadMore.bind(null), false);
 };
+
+function wikiResultClose() {
+    const wikiResult = document.getElementById('wiki-box-result');
+    if (wikiResult) {
+        wikiResult.remove();
+    }
+}
+
+function wikiLoadMore() {
+    lastParagraphIndex++;
+    const wikiResultContent = document.getElementById('wiki-result-content');
+    const contentItem = document.createElement('p');
+    contentItem.innerText = paragraphs[lastParagraphIndex]?.innerText;
+    wikiResultContent.appendChild(contentItem);
+
+    if (paragraphs.length - 1 == lastParagraphIndex) {
+        const wikiResultLoadModeButton = document.getElementById('wiki-result-load-more');
+        wikiResultLoadModeButton.remove();
+    }
+}

@@ -4,17 +4,15 @@ var selectedText;
 chrome.runtime.onMessage.addListener(onSelectedTextChanged);
 
 chrome.contextMenus.create({
-    id: "search-on-wikipedia",
-    title: "Search on Wikipedia",
-    contexts: ["selection"],
+    id: "search-on-wikipedia", title: "Search on Wikipedia", contexts: ["selection"],
 });
 
 function onSelectedTextChanged(message, tab) {
     selectedText = message.text;
     if (message.search) {
 
-        selectedText = normalizeSearchingText(message.text);
-        getWikipediaContent(tab.tab.id);
+        //selectedText = normalizeSearchingText(message.text);
+        getWikipediaContent(tab.tab.id, selectedText);
     }
 
 };
@@ -41,15 +39,18 @@ function normalizeSearchingText(text) {
 
 
 function openWikipedia() {
-    chrome.tabs.create({ url: "" + wikiUrl + selectedText + "" });
+    chrome.tabs.create({url: "" + wikiUrl + selectedText + ""});
 }
 
-function getWikipediaContent(tabId) {
-    fetch(wikiUrl + selectedText)
+function getWikipediaContent(tabId, selectedText) {
+    fetch(wikiUrl + normalizeSearchingText(selectedText))
         .then(response => response.text())
         .then(data => {
             //console.log(data);
-            chrome.tabs.sendMessage(tabId, data);
+            const contentInfo = {
+                data: data, selectedText: selectedText
+            };
+            chrome.tabs.sendMessage(tabId, contentInfo);
             //getPTags(data);
         })
         .catch(err => {
