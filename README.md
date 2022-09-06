@@ -2,7 +2,7 @@
 A web extension that makes it easy to search Wikipedia
 
 ## Installation
-You can download the [release file](https://github.com/bsogulcan/IISManagerCli). Coming to the Web Store!
+You can download the [release file](https://github.com/bsogulcan/ask-wiki/releases). Coming to the Web Store!
 
 ## Usage
 First, select the word you want to get information about. Then a button will appear that you have to click. Or right click and select 'Search on Wikipedia'
