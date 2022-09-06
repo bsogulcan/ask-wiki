@@ -2,9 +2,9 @@
   "manifest_version": 3,
   "name": "AskWiki",
   "description": "Learn from Wikipedia",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "icons": {
-    "64": "icons/icon.png"
+    "64": "icons/wikipedia-0.png"
   },
   "background": {
     "service_worker": "background_script.js"
@@ -24,9 +24,8 @@
     }
   ],
   "action": {
-    "default_popup": "browserAction/index.html",
     "default_icon": {
-      "64": "icons/icon.png"
+      "64": "icons/wikipedia-0.png"
     },
     "default_title": "AskWiki"
   },

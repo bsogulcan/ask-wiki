@@ -53,6 +53,13 @@ function onDataReceived(contentInfo) {
     el.innerHTML = contentInfo.data;
     paragraphs = el.getElementsByTagName('p');
 
+    const paragraphList = Object.keys(paragraphs).map(index => {
+        let paragraph = paragraphs[index];
+        return paragraph;
+    });
+
+    paragraphs = paragraphList.filter(x => x.innerText.length > 0 && x.className != 'mw-empty-elt' && !x.innerText.includes('Other reasons this message may be displayed'));
+
     let wikiResultHtml = wikiResultBaseHtml.replace('{{top}}', (clientY - 40))
         .replace('{{left}}', clientX);
     const wikiResult = document.createElement('span');
@@ -64,15 +71,23 @@ function onDataReceived(contentInfo) {
 
     const wikiResultTitle = document.getElementById('wiki-result-title');
     wikiResultTitle.innerText = contentInfo.selectedText;
+    wikiResultTitle.href = 'www.google.com';
 
     const wikiResultContent = document.getElementById('wiki-result-content');
     const contentItem = document.createElement('p');
-    contentItem.innerText = paragraphs[0]?.innerText;
-    wikiResultContent.appendChild(contentItem);
-    lastParagraphIndex = 0;
 
     const wikiResultLoadModeButton = document.getElementById('wiki-result-load-more');
     wikiResultLoadModeButton.addEventListener("click", wikiLoadMore.bind(null), false);
+
+    if (paragraphs.length != 0) {
+        contentItem.innerText = paragraphs[0]?.innerText;
+    } else {
+        contentItem.innerText = 'Wikipedia does not have an article with this exact name.';
+        wikiResultLoadModeButton.remove();
+    }
+
+    wikiResultContent.appendChild(contentItem);
+    lastParagraphIndex = 0;
 };
 
 function wikiResultClose() {
